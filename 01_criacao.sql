@@ -23,8 +23,7 @@ DROP TYPE  IF EXISTS gravidade_enum;
 CREATE TABLE usuario (
     id_usuario SERIAL        PRIMARY KEY,
     nome       VARCHAR(100)  NOT NULL,
-    email      VARCHAR(150)  NOT NULL UNIQUE,
-    senha      VARCHAR(255)  NOT NULL
+    email      VARCHAR(150)  NOT NULL UNIQUE
 );
 
 -- ============================================================
@@ -74,13 +73,17 @@ CREATE TABLE historico_medico (
 -- TABELA: cuida (relacionamento N:N entre cuidador e paciente)
 -- ============================================================
 CREATE TABLE cuida (
-    id_cuidador  INTEGER NOT NULL REFERENCES cuidador(id_usuario) ON DELETE CASCADE,
-    id_paciente  INTEGER NOT NULL REFERENCES paciente(id_paciente) ON DELETE CASCADE,
-    data_inicio  DATE    NOT NULL,
-    data_fim     DATE,
-    PRIMARY KEY (id_cuidador, id_paciente, data_inicio)
+    id          SERIAL   PRIMARY KEY,
+    id_cuidador INTEGER  NOT NULL,
+    id_paciente INTEGER  NOT NULL,
+    data_inicio DATE     NOT NULL,
+    data_fim    DATE,
+    -- Correção: Apontar para cuidador(id_usuario) e paciente(id_paciente)
+    FOREIGN KEY (id_cuidador) REFERENCES cuidador(id_usuario) ON DELETE CASCADE,
+    FOREIGN KEY (id_paciente) REFERENCES paciente(id_paciente) ON DELETE CASCADE,
+    -- Restrição para não repetir o mesmo vínculo na mesma data
+    CONSTRAINT uq_vinculo UNIQUE (id_cuidador, id_paciente, data_inicio)
 );
-
 -- ============================================================
 -- TIPO ENUM: gravidade para ocorrencias
 -- ============================================================

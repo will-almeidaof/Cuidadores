@@ -9,22 +9,30 @@
 -- ============================================================
 -- USUÁRIOS (15 registros: 10 cuidadores + 5 administradores)
 -- ============================================================
-INSERT INTO usuario (nome, email, senha) VALUES
-    ('Ana Lima',        'ana.lima@cuidar.com',       'hash_ana123'),
-    ('Bruno Souza',     'bruno.souza@cuidar.com',    'hash_bru456'),
-    ('Carla Mendes',    'carla.mendes@cuidar.com',   'hash_car789'),
-    ('Diego Ferreira',  'diego.ferreira@cuidar.com', 'hash_die012'),
-    ('Elaine Costa',    'elaine.costa@cuidar.com',   'hash_ela345'),
-    ('Felipe Rocha',    'felipe.rocha@cuidar.com',   'hash_fel678'),
-    ('Gabriela Nunes',  'gabriela.nunes@cuidar.com', 'hash_gab901'),
-    ('Henrique Alves',  'henrique.alves@cuidar.com', 'hash_hen234'),
-    ('Isabela Martins', 'isabela.martins@cuidar.com','hash_isa567'),
-    ('Jonas Pereira',   'jonas.pereira@cuidar.com',  'hash_jon890'),
-    ('Karla Vieira',    'karla.vieira@cuidar.com',   'hash_kar111'),
-    ('Lucas Oliveira',  'lucas.oliveira@cuidar.com', 'hash_luc222'),
-    ('Marina Batista',  'marina.batista@cuidar.com', 'hash_mar333'),
-    ('Nelson Gomes',    'nelson.gomes@cuidar.com',   'hash_nel444'),
-    ('Olivia Teixeira', 'olivia.teixeira@cuidar.com','hash_oli555');
+
+SET client_encoding = 'UTF8';
+
+INSERT INTO usuario (nome, email) VALUES
+    ('Ana Lima',        'ana.lima@cuidar.com'       ),
+    ('Bruno Souza',     'bruno.souza@cuidar.com'    ),
+    ('Carla Mendes',    'carla.mendes@cuidar.com'   ),
+    ('Diego Ferreira',  'diego.ferreira@cuidar.com' ),
+    ('Elaine Costa',    'elaine.costa@cuidar.com'   ),
+    ('Felipe Rocha',    'felipe.rocha@cuidar.com'   ),
+    ('Gabriela Nunes',  'gabriela.nunes@cuidar.com' ),
+    ('Henrique Alves',  'henrique.alves@cuidar.com' ),
+    ('Isabela Martins', 'isabela.martins@cuidar.com'),
+    ('Jonas Pereira',   'jonas.pereira@cuidar.com'  ),
+    ('Karla Vieira',    'karla.vieira@cuidar.com'   ),
+    ('Lucas Oliveira',  'lucas.oliveira@cuidar.com' ),
+    ('Marina Batista',  'marina.batista@cuidar.com' ),
+    ('Nelson Gomes',    'nelson.gomes@cuidar.com'   ),
+    ('Olivia Teixeira', 'olivia.teixeira@cuidar.com'),
+    ('Patricia Duarte', 'patricia.duarte@cuidar.com'),
+    ('Rodrigo Farias',  'rodrigo.farias@cuidar.com' ),
+    ('Sofia Castro',    'sofia.castro@cuidar.com'   ),
+    ('Tiago Monteiro',  'tiago.monteiro@cuidar.com' ),
+    ('Vanessa Rocha',   'vanessa.rocha@cuidar.com'  );
 
 -- ============================================================
 -- CUIDADORES (ids 1 a 10 → usuários 1–10)
@@ -42,14 +50,19 @@ INSERT INTO cuidador (id_usuario, cpf) VALUES
     (10, '10011122210');
 
 -- ============================================================
--- ADMINISTRADORES (ids 11 a 15)
+-- ADMINISTRADORES (ids 11 a 20 → mínimo de 10 tuplas)
 -- ============================================================
 INSERT INTO administrador (id_usuario) VALUES
     (11),
     (12),
     (13),
     (14),
-    (15);
+    (15),
+    (16),
+    (17),
+    (18),
+    (19),
+    (20);
 
 -- ============================================================
 -- TELEFONES DE CUIDADORES (atributo multivalorado — 15 registros)

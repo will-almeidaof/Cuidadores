@@ -1,0 +1,1322 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CareNet | Sistema de Cuidadores</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Lucide Icons para ícones modernos -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+
+<body class="bg-gradient-to-br from-slate-50 via-white to-zinc-100 font-sans text-gray-800 antialiased min-h-screen">
+
+    <!-- Layout Principal -->
+    <div class="flex h-screen overflow-hidden">
+
+        <!-- Sidebar Lateral -->
+        <aside class="w-64 bg-slate-900 text-white flex flex-col justify-between hidden md:flex">
+            <div>
+                <div class="p-5 flex items-center gap-3 border-b border-slate-800">
+                    <i data-lucide="heart-handshake" class="text-emerald-400 w-8 h-8"></i>
+                    <div>
+                        <h1 class="font-bold text-lg leading-tight">CareNet</h1>
+                        <span class="text-xs text-slate-400">Painel de Controle</span>
+                    </div>
+                </div>
+                <nav class="p-4 space-y-1">
+                    <button onclick="switchTab('dashboard')" id="nav-dashboard"
+                        class="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium bg-emerald-600 text-white transition-colors">
+                        <i data-lucide="layout-dashboard" class="w-5 h-5"></i> Dashboard
+                    </button>
+                    <button onclick="switchTab('pacientes')" id="nav-pacientes"
+                        class="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium text-slate-400 hover:bg-slate-800 hover:text-white transition-colors">
+                        <i data-lucide="accessibility" class="w-5 h-5"></i> Pacientes
+                    </button>
+                    <button onclick="switchTab('cuidadores')" id="nav-cuidadores"
+                        class="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium text-slate-400 hover:bg-slate-800 hover:text-white transition-colors">
+                        <i data-lucide="shield-user" class="w-5 h-5"></i> Cuidadores
+                    </button>
+                    <button onclick="switchTab('atividades')" id="nav-atividades"
+                        class="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium text-slate-400 hover:bg-slate-800 hover:text-white transition-colors">
+                        <i data-lucide="calendar-check" class="w-5 h-5"></i> Atividades
+                    </button>
+                    <button onclick="switchTab('ocorrencias')" id="nav-ocorrencias"
+                        class="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium text-slate-400 hover:bg-slate-800 hover:text-white transition-colors">
+                        <i data-lucide="alert-triangle" class="w-5 h-5"></i> Ocorrências
+                    </button>
+                    <button onclick="switchTab('vinculos')" id="nav-vinculos"
+                        class="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium text-slate-400 hover:bg-slate-800 hover:text-white transition-colors">
+                        <i data-lucide="heart-pulse" class="w-5 h-5"></i> Vínculos de Cuidado
+                    </button>
+                </nav>
+            </div>
+            <div class="p-4 border-t border-slate-800 text-xs text-slate-500 text-center">
+                &nbsp;
+            </div>
+        </aside>
+
+        <!-- Área de Conteúdo Principal -->
+        <main class="flex-1 flex flex-col overflow-y-auto">
+            <!-- Topbar institucional -->
+            <header class="bg-white border-b border-gray-200 px-8 py-4 flex items-center justify-between shadow-sm">
+                <div class="flex items-center gap-4">
+                    <h2 id="page-title" class="text-xl font-bold text-gray-800">Dashboard Geral</h2>
+                </div>
+                <div class="flex items-center gap-3">
+                    <div class="w-2 h-2 bg-emerald-500 rounded-full animate-pulse"></div>
+                    <span class="text-sm text-gray-600 font-medium">API Conectada</span>
+                </div>
+            </header>
+
+            <!-- Seções Dinâmicas -->
+            <div class="p-8 max-w-7xl w-full mx-auto space-y-8">
+
+                <!-- SEÇÃO: DASHBOARD -->
+                <section id="sec-dashboard" class="space-y-8 animate-fade-in">
+
+                    <!-- 1. HEADER PREMIUM: Saudação e Contexto -->
+                    <div
+                        class="relative py-6 overflow-hidden rounded-3xl bg-gradient-to-r from-slate-900 via-emerald-950 to-slate-900 text-white p-8 shadow-xl border border-white/5">
+                        <div
+                            class="absolute -right-10 -top-10 w-40 h-40 bg-emerald-50/10 rounded-full blur-3xl pointer-events-none">
+                        </div>
+                        <div
+                            class="absolute -left-10 -bottom-10 w-40 h-40 bg-teal-50/10 rounded-full blur-3xl pointer-events-none">
+                        </div>
+
+                        <div
+                            class="relative z-10 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+                            <div>
+                                <span
+                                    class="text-emerald-400 text-xs font-bold tracking-widest uppercase bg-emerald-500/10 px-3 py-1 rounded-full border border-emerald-500/20">Painel
+                                    de Controle</span>
+                                <h2
+                                    class="text-3xl md:text-4xl font-extrabold tracking-tight mt-3 bg-clip-text text-transparent bg-gradient-to-r from-white via-slate-100 to-slate-300">
+                                    Olá, Administrador</h2>
+                                <p class="text-slate-400 text-sm mt-1 font-light">Sua central de monitoramento
+                                    residencial e clínico está totalmente operacional.</p>
+                            </div>
+                            <div
+                                class="flex items-center gap-3 bg-white/5 backdrop-blur-md px-4 py-2 rounded-2xl border border-white/10 text-xs text-slate-300 font-medium">
+                                <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                                Sincronizado em tempo real
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 2. BENTO GRID: Métricas de Alta Performance (5 Colunas) -->
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6">
+
+                        <!-- CARD: Pacientes -->
+                        <div
+                            class="group relative overflow-hidden bg-white p-6 rounded-3xl border border-slate-100 hover:border-emerald-500/20 shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col justify-between min-h-[160px]">
+                            <div
+                                class="absolute top-0 right-0 w-32 h-32 bg-emerald-50/50 rounded-bl-full pointer-events-none group-hover:scale-110 transition-transform duration-300">
+                            </div>
+                            <div class="flex justify-between items-start">
+                                <div
+                                    class="p-3 bg-emerald-50 rounded-2xl text-emerald-600 transition-colors group-hover:bg-emerald-600 group-hover:text-white duration-300">
+                                    <i data-lucide="users" class="w-6 h-6"></i>
+                                </div>
+                                <span
+                                    class="text-[10px] font-bold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-md">Ativos</span>
+                            </div>
+                            <div class="mt-4">
+                                <p class="text-xs font-medium text-slate-400 uppercase tracking-wider">Pacientes
+                                    Assistidos</p>
+                                <h3 id="card-total-pacientes"
+                                    class="text-4xl font-black text-slate-800 tracking-tight mt-1">0</h3>
+                            </div>
+                        </div>
+
+                        <!-- CARD: Cuidadores -->
+                        <div
+                            class="group relative overflow-hidden bg-white p-6 rounded-3xl border border-slate-100 hover:border-blue-500/20 shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col justify-between min-h-[160px]">
+                            <div
+                                class="absolute top-0 right-0 w-32 h-32 bg-blue-50/50 rounded-bl-full pointer-events-none group-hover:scale-110 transition-transform duration-300">
+                            </div>
+                            <div class="flex justify-between items-start">
+                                <div
+                                    class="p-3 bg-blue-50 rounded-2xl text-blue-600 transition-colors group-hover:bg-blue-600 group-hover:text-white duration-300">
+                                    <i data-lucide="heart-handshake" class="w-6 h-6"></i>
+                                </div>
+                                <span
+                                    class="text-[10px] font-bold text-blue-600 bg-blue-50 px-2 py-0.5 rounded-md">Plantão</span>
+                            </div>
+                            <div class="mt-4">
+                                <p class="text-xs font-medium text-slate-400 uppercase tracking-wider">Cuidadores
+                                    Alocados</p>
+                                <h3 id="card-total-cuidadores"
+                                    class="text-4xl font-black text-slate-800 tracking-tight mt-1">0</h3>
+                            </div>
+                        </div>
+
+                        <!-- NOVO CARD: Vínculos Ativos -->
+                        <div
+                            class="group relative overflow-hidden bg-white p-6 rounded-3xl border border-slate-100 hover:border-teal-500/20 shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col justify-between min-h-[160px]">
+                            <div
+                                class="absolute top-0 right-0 w-32 h-32 bg-teal-50/50 rounded-bl-full pointer-events-none group-hover:scale-110 transition-transform duration-300">
+                            </div>
+                            <div class="flex justify-between items-start">
+                                <div
+                                    class="p-3 bg-teal-50 rounded-2xl text-teal-600 transition-colors group-hover:bg-teal-600 group-hover:text-white duration-300">
+                                    <i data-lucide="heart-pulse" class="w-6 h-6"></i>
+                                </div>
+                                <span
+                                    class="text-[10px] font-bold text-teal-600 bg-teal-50 px-2 py-0.5 rounded-md">Relações</span>
+                            </div>
+                            <div class="mt-4">
+                                <p class="text-xs font-medium text-slate-400 uppercase tracking-wider">Vínculos Ativos
+                                </p>
+                                <h3 id="card-total-vinculos"
+                                    class="text-4xl font-black text-slate-800 tracking-tight mt-1">0</h3>
+                            </div>
+                        </div>
+
+                        <!-- CARD: Atividades -->
+                        <div
+                            class="group relative overflow-hidden bg-white p-6 rounded-3xl border border-slate-100 hover:border-amber-500/20 shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col justify-between min-h-[160px]">
+                            <div
+                                class="absolute top-0 right-0 w-32 h-32 bg-amber-50/50 rounded-bl-full pointer-events-none group-hover:scale-110 transition-transform duration-300">
+                            </div>
+                            <div class="flex justify-between items-start">
+                                <div
+                                    class="p-3 bg-amber-50 rounded-2xl text-amber-600 transition-colors group-hover:bg-amber-600 group-hover:text-white duration-300">
+                                    <i data-lucide="calendar-check" class="w-6 h-6"></i>
+                                </div>
+                                <span
+                                    class="text-[10px] font-bold text-amber-600 bg-amber-50 px-2 py-0.5 rounded-md">Hoje</span>
+                            </div>
+                            <div class="mt-4">
+                                <p class="text-xs font-medium text-slate-400 uppercase tracking-wider">Cronogramas
+                                    Concluídos</p>
+                                <h3 id="card-total-atividades"
+                                    class="text-4xl font-black text-slate-800 tracking-tight mt-1">0</h3>
+                            </div>
+                        </div>
+
+                        <!-- CARD: Alertas Críticos -->
+                        <div
+                            class="group relative overflow-hidden bg-white p-6 rounded-3xl border border-slate-100 hover:border-rose-500/20 shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col justify-between min-h-[160px]">
+                            <div
+                                class="absolute top-0 right-0 w-32 h-32 bg-rose-50/50 rounded-bl-full pointer-events-none group-hover:scale-110 transition-transform duration-300">
+                            </div>
+                            <div class="flex justify-between items-start">
+                                <div
+                                    class="p-3 bg-rose-50 rounded-2xl text-rose-600 transition-colors group-hover:bg-rose-600 group-hover:text-white duration-300">
+                                    <i data-lucide="alert-triangle" class="w-6 h-6"></i>
+                                </div>
+                                <span
+                                    class="text-[10px] font-bold text-rose-600 bg-rose-100 px-2 py-0.5 rounded-md animate-pulse">Crítico</span>
+                            </div>
+                            <div class="mt-4">
+                                <p class="text-xs font-medium text-slate-400 uppercase tracking-wider">Ocorrências
+                                    Graves</p>
+                                <h3 id="card-total-ocorrencias"
+                                    class="text-4xl font-black text-rose-600 tracking-tight mt-1">0</h3>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <!-- 3. ASSINATURA ARQUITETÔNICA: Layout Panorâmico de Ações -->
+                    <div class="grid grid-cols-1 gap-8">
+
+                        <!-- Bloco de Atalhos Expandido (Ocupa a largura total) -->
+                        <div
+                            class="bg-white p-8 rounded-3xl border border-slate-100 shadow-sm flex flex-col justify-between space-y-6">
+                            <div>
+                                <h4 class="text-lg font-bold text-slate-800">Ações Instantâneas</h4>
+                                <p class="text-sm text-slate-400 mt-0.5">Gestão ágil e acessos rápidos do sistema.</p>
+                            </div>
+
+                            <!-- Grid de botões maiores e responsivos -->
+                            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                                <button onclick="abrirModalAtividade()"
+                                    class="flex flex-col items-center justify-center p-6 rounded-2xl border border-slate-100 hover:bg-emerald-50 hover:border-emerald-100 text-slate-700 hover:text-emerald-700 font-semibold text-sm gap-3 transition-all group shadow-sm">
+                                    <div
+                                        class="p-3 bg-slate-50 rounded-xl group-hover:bg-emerald-100 text-slate-500 group-hover:text-emerald-600 transition-colors">
+                                        <i data-lucide="activity" class="w-6 h-6"></i>
+                                    </div>
+                                    Nova Atividade
+                                </button>
+                                <button onclick="abrirModalOcorrencia()"
+                                    class="flex flex-col items-center justify-center p-6 rounded-2xl border border-slate-100 hover:bg-rose-50 hover:border-rose-100 text-slate-700 hover:text-rose-700 font-semibold text-sm gap-3 transition-all group shadow-sm">
+                                    <div
+                                        class="p-3 bg-slate-50 rounded-xl group-hover:bg-rose-100 text-slate-500 group-hover:text-rose-600 transition-colors">
+                                        <i data-lucide="shield-alert" class="w-6 h-6"></i>
+                                    </div>
+                                    Nova Ocorrência
+                                </button>
+                                <button onclick="switchTab('pacientes')"
+                                    class="flex flex-col items-center justify-center p-6 rounded-2xl border border-slate-100 hover:bg-slate-50 text-slate-700 font-semibold text-sm gap-3 transition-all group shadow-sm">
+                                    <div
+                                        class="p-3 bg-slate-50 rounded-xl group-hover:bg-slate-200 text-slate-500 transition-colors">
+                                        <i data-lucide="plus-circle" class="w-6 h-6"></i>
+                                    </div>
+                                    Ver Pacientes
+                                </button>
+                                <button onclick="switchTab('vinculos')"
+                                    class="flex flex-col items-center justify-center p-6 rounded-2xl border border-slate-100 hover:bg-slate-50 text-slate-700 font-semibold text-sm gap-3 transition-all group shadow-sm">
+                                    <div
+                                        class="p-3 bg-slate-50 rounded-xl group-hover:bg-slate-200 text-slate-500 transition-colors">
+                                        <i data-lucide="link" class="w-6 h-6"></i>
+                                    </div>
+                                    Gerenciar Vínculos
+                                </button>
+                            </div>
+
+
+
+                        </div>
+                </section>
+
+                <!-- SEÇÃO: VÍNCULOS -->
+                <section id="sec-vinculos" class="hidden space-y-4">
+                    <!-- Painel de Filtros Avançados para Vínculos -->
+                    <div class="bg-slate-100 p-4 rounded-2xl border border-gray-200 space-y-4">
+                        <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                            <!-- Busca por Nome -->
+                            <div>
+                                <label class="block text-xs font-medium text-gray-500 mb-1">Buscar por Nome</label>
+                                <div class="relative">
+                                    <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-400">
+                                        <i data-lucide="search" class="w-4 h-4"></i>
+                                    </span>
+                                    <input type="text" id="pesquisa-vinculo-nome"
+                                        placeholder="Nome do cuidador ou paciente..." oninput="filtrarVinculos()"
+                                        class="w-full pl-9 pr-4 py-2 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 bg-white transition-all">
+                                </div>
+                            </div>
+
+                            <!-- Status do Vínculo -->
+                            <div>
+                                <label class="block text-xs font-medium text-gray-500 mb-1">Status</label>
+                                <select id="pesquisa-vinculo-status" onchange="filtrarVinculos()"
+                                    class="w-full px-3 py-2 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 bg-white transition-all">
+                                    <option value="todos">Todos os Status</option>
+                                    <option value="ativos">Apenas Ativos</option>
+                                    <option value="finalizados">Apenas Finalizados</option>
+                                </select>
+                            </div>
+
+                            <!-- Período: De -->
+                            <div>
+                                <label class="block text-xs font-medium text-gray-500 mb-1">A partir de</label>
+                                <input type="date" id="pesquisa-vinculo-de" onchange="filtrarVinculos()"
+                                    class="w-full px-3 py-2 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 bg-white transition-all">
+                            </div>
+
+                            <!-- Período: Até -->
+                            <div>
+                                <label class="block text-xs font-medium text-gray-500 mb-1">Até data</label>
+                                <input type="date" id="pesquisa-vinculo-ate" onchange="filtrarVinculos()"
+                                    class="w-full px-3 py-2 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 bg-white transition-all">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <h3 class="text-lg font-bold text-gray-900">Relações Cuidador ↔ Paciente (Tabela Cuida)</h3>
+                        <button onclick="abrirModalVinculo()"
+                            class="bg-emerald-600 hover:bg-emerald-700 text-white font-medium text-sm px-4 py-2 rounded-xl transition-all flex items-center gap-2">
+                            <i data-lucide="plus" class="w-4 h-4"></i> Vincular Cuidador
+                        </button>
+                    </div>
+                    <div class="bg-white rounded-2xl border border-gray-200 overflow-hidden shadow-sm">
+                        <table class="w-full text-left border-collapse">
+                            <thead>
+                                <tr
+                                    class="bg-gray-50 border-b border-gray-200 text-xs font-semibold text-gray-500 uppercase">
+                                    <th class="p-4">Cuidador</th>
+                                    <th class="p-4">Paciente</th>
+                                    <th class="p-4">Data Início</th>
+                                    <th class="p-4">Data Fim</th>
+                                    <th class="p-4 text-right">Ações</th> <!-- Coluna adicionada -->
+                                </tr>
+                            </thead>
+                            <tbody id="lista-vinculos" class="divide-y divide-gray-100 text-sm text-gray-700">
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <!-- SEÇÃO: PACIENTES -->
+                <div class="mb-4">
+                </div>
+                <section id="sec-pacientes" class="hidden space-y-4">
+                    <div class="relative max-w-xs">
+                        <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-400">
+                            <i data-lucide="search" class="w-4 h-4"></i>
+                        </span>
+                        <input type="text" id="pesquisa-paciente" placeholder="Buscar paciente pelo nome..."
+                            oninput="filtrarPacientes()"
+                            class="w-full pl-9 pr-4 py-2 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all">
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <h3 class="text-lg font-bold text-gray-900">Listagem de Pacientes</h3>
+                        <button onclick="abrirModalPaciente()"
+                            class="bg-emerald-600 hover:bg-emerald-700 text-white font-medium text-sm px-4 py-2 rounded-xl transition-all flex items-center gap-2 shadow-sm">
+                            <i data-lucide="plus" class="w-4 h-4"></i> Adicionar Paciente
+                        </button>
+                    </div>
+                    <div class="bg-white rounded-2xl border border-gray-200 overflow-hidden shadow-sm">
+                        <table class="w-full text-left border-collapse">
+                            <thead>
+                                <tr
+                                    class="bg-gray-50 border-b border-gray-200 text-xs font-semibold text-gray-500 uppercase tracking-wider">
+                                    <th class="p-4">Nome</th>
+                                    <th class="p-4">Nascimento</th>
+                                    <th class="p-4">Atividades</th>
+                                    <th class="p-4">Ocorrências</th>
+                                    <th class="p-4 text-right">Ações</th>
+                                </tr>
+                            </thead>
+                            <tbody id="lista-pacientes" class="divide-y divide-gray-100 text-sm text-gray-700"></tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <!-- SEÇÃO: CUIDADORES -->
+                <section id="sec-cuidadores" class="hidden space-y-4">
+                    <div class="mb-4">
+                        <div class="relative max-w-xs">
+                            <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-400">
+                                <i data-lucide="search" class="w-4 h-4"></i>
+                            </span>
+                            <input type="text" id="pesquisa-cuidador" placeholder="Buscar por nome ou CPF..."
+                                oninput="filtrarCuidadores()"
+                                class="w-full pl-9 pr-4 py-2 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all">
+                        </div>
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <h3 class="text-lg font-bold text-gray-900">Listagem de Cuidadores</h3>
+                        <button onclick="abrirModalCuidador()"
+                            class="bg-emerald-600 hover:bg-emerald-700 text-white font-medium text-sm px-4 py-2 rounded-xl transition-all flex items-center gap-2 shadow-sm">
+                            <i data-lucide="plus" class="w-4 h-4"></i> Adicionar Cuidador
+                        </button>
+                    </div>
+                    <div class="bg-white rounded-2xl border border-gray-200 overflow-hidden shadow-sm">
+                        <table class="w-full text-left border-collapse">
+                            <thead>
+                                <tr
+                                    class="bg-gray-50 border-b border-gray-200 text-xs font-semibold text-gray-500 uppercase tracking-wider">
+                                    <th class="p-4">Nome / E-mail</th>
+                                    <th class="p-4">CPF</th>
+                                    <th class="p-4">Telefones</th>
+                                    <th class="p-4">Histórico</th>
+                                    <th class="p-4 text-right">Ações</th>
+                                </tr>
+                            </thead>
+                            <tbody id="lista-cuidadores" class="divide-y divide-gray-100 text-sm text-gray-700"></tbody>
+                        </table>
+                    </div>
+                </section>
+
+
+                <!-- SEÇÃO: ATIVIDADES -->
+                <section id="sec-atividades" class="hidden space-y-4">
+                    <!-- Painel de Filtros Avançados para Atividades -->
+                    <div class="bg-slate-100 p-4 rounded-2xl border border-gray-200 space-y-4">
+                        <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                            <!-- Busca por Nome -->
+                            <div>
+                                <label class="block text-xs font-medium text-gray-500 mb-1">Buscar por Nome</label>
+                                <div class="relative">
+                                    <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-400">
+                                        <i data-lucide="search" class="w-4 h-4"></i>
+                                    </span>
+                                    <input type="text" id="pesquisa-atividade-nome"
+                                        placeholder="Paciente ou cuidador..." oninput="filtrarAtividades()"
+                                        class="w-full pl-9 pr-4 py-2 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 bg-white transition-all">
+                                </div>
+                            </div>
+
+                            <!-- Busca por Tipo (Texto Livre) -->
+                            <div>
+                                <label class="block text-xs font-medium text-gray-500 mb-1">Tipo de Atividade</label>
+                                <div class="relative">
+                                    <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-400">
+                                        <i data-lucide="activity" class="w-4 h-4"></i>
+                                    </span>
+                                    <input type="text" id="pesquisa-atividade-tipo"
+                                        placeholder="Ex: Medicação, Banho..." oninput="filtrarAtividades()"
+                                        class="w-full pl-9 pr-4 py-2 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 bg-white transition-all">
+                                </div>
+                            </div>
+
+                            <!-- Período: De -->
+                            <div>
+                                <label class="block text-xs font-medium text-gray-500 mb-1">A partir de</label>
+                                <input type="date" id="pesquisa-atividade-de" onchange="filtrarAtividades()"
+                                    class="w-full px-3 py-2 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 bg-white transition-all">
+                            </div>
+
+                            <!-- Período: Até -->
+                            <div>
+                                <label class="block text-xs font-medium text-gray-500 mb-1">Até data</label>
+                                <input type="date" id="pesquisa-atividade-ate" onchange="filtrarAtividades()"
+                                    class="w-full px-3 py-2 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 bg-white transition-all">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="flex justify-between items-center">
+                        <h3 class="text-lg font-bold text-gray-900">Cronograma de Atividades</h3>
+                        <button onclick="abrirModalAtividade()"
+                            class="bg-emerald-600 hover:bg-emerald-700 text-white font-medium text-sm px-4 py-2 rounded-xl transition-all flex items-center gap-2 shadow-sm">
+                            <i data-lucide="plus" class="w-4 h-4"></i> Nova Atividade
+                        </button>
+                    </div>
+                    <div class="bg-white rounded-2xl border border-gray-200 overflow-hidden shadow-sm">
+                        <table class="w-full text-left border-collapse">
+                            <thead>
+                                <tr
+                                    class="bg-gray-50 border-b border-gray-200 text-xs font-semibold text-gray-500 uppercase tracking-wider">
+                                    <th class="p-4">Data/Hora</th>
+                                    <th class="p-4">Paciente</th>
+                                    <th class="p-4">Cuidador</th>
+                                    <th class="p-4">Tipo / Descrição</th>
+                                    <th class="p-4 text-right">Ações</th>
+                                </tr>
+                            </thead>
+                            <tbody id="lista-atividades" class="divide-y divide-gray-100 text-sm text-gray-700"></tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <!-- SEÇÃO: OCORRÊNCIAS -->
+                <section id="sec-ocorrencias" class="hidden space-y-4">
+                    <!-- Painel de Filtros Avançados para Ocorrências -->
+                    <div class="bg-slate-100 p-4 rounded-2xl border border-gray-200 space-y-4">
+                        <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                            <!-- Busca por Nome (Paciente ou Cuidador) -->
+                            <div>
+                                <label class="block text-xs font-medium text-gray-500 mb-1">Buscar por Nome</label>
+                                <div class="relative">
+                                    <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-400">
+                                        <i data-lucide="search" class="w-4 h-4"></i>
+                                    </span>
+                                    <input type="text" id="pesquisa-ocorrencia-paciente"
+                                        placeholder="Nome do paciente..." oninput="filtrarOcorrencias()"
+                                        class="w-full pl-9 pr-4 py-2 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 bg-white transition-all">
+                                </div>
+                            </div>
+
+                            <!-- Nível de Gravidade -->
+                            <div>
+                                <label class="block text-xs font-medium text-gray-500 mb-1">Gravidade</label>
+                                <select id="pesquisa-ocorrencia-gravidade" onchange="filtrarOcorrencias()"
+                                    class="w-full px-3 py-2 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 bg-white transition-all">
+                                    <option value="todas">Todas as Gravidades</option>
+                                    <option value="baixa">Baixa</option>
+                                    <option value="media">Média</option>
+                                    <option value="alta">Alta</option>
+                                </select>
+                            </div>
+
+                            <!-- Período: De -->
+                            <div>
+                                <label class="block text-xs font-medium text-gray-500 mb-1">A partir de</label>
+                                <input type="date" id="pesquisa-ocorrencia-de" onchange="filtrarOcorrencias()"
+                                    class="w-full px-3 py-2 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 bg-white transition-all">
+                            </div>
+
+                            <!-- Período: Até -->
+                            <div>
+                                <label class="block text-xs font-medium text-gray-500 mb-1">Até data</label>
+                                <input type="date" id="pesquisa-ocorrencia-ate" onchange="filtrarOcorrencias()"
+                                    class="w-full px-3 py-2 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-500 bg-white transition-all">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="flex justify-between items-center">
+                        <h3 class="text-lg font-bold text-gray-900">Registro de Ocorrências</h3>
+                        <button onclick="abrirModalOcorrencia()"
+                            class="bg-emerald-600 hover:bg-emerald-700 text-white font-medium text-sm px-4 py-2 rounded-xl transition-all flex items-center gap-2 shadow-sm">
+                            <i data-lucide="plus" class="w-4 h-4"></i> Nova Ocorrência
+                        </button>
+                    </div>
+                    <div class="bg-white rounded-2xl border border-gray-200 overflow-hidden shadow-sm">
+                        <table class="w-full text-left border-collapse">
+                            <thead>
+                                <tr
+                                    class="bg-gray-50 border-b border-gray-200 text-xs font-semibold text-gray-500 uppercase tracking-wider">
+                                    <th class="p-4">Data/Hora</th>
+                                    <th class="p-4">Paciente</th>
+                                    <th class="p-4">Gravidade</th>
+                                    <th class="p-4">Descrição</th>
+                                    <th class="p-4 text-right">Ações</th>
+                                </tr>
+                            </thead>
+                            <tbody id="lista-ocorrencias" class="divide-y divide-gray-100 text-sm text-gray-700">
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+            </div>
+        </main>
+    </div>
+
+    <!-- MODAL DINÂMICO PARA CADASTROS -->
+    <div id="modal-global"
+        class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center z-50 hidden p-4">
+        <div
+            class="bg-white w-full max-w-md rounded-2xl shadow-xl border border-gray-100 overflow-hidden flex flex-col max-h-[90vh]">
+            <div class="px-6 py-4 bg-slate-50 border-b border-gray-100 flex items-center justify-between">
+                <h4 id="modal-title" class="font-bold text-gray-800">Formulário</h4>
+                <button onclick="fecharModal()" class="text-gray-400 hover:text-gray-600"><i data-lucide="x"
+                        class="w-5 h-5"></i></button>
+            </div>
+            <form id="modal-form" onsubmit="enviarFormulario(event)" class="p-6 overflow-y-auto space-y-4 flex-1">
+                <input type="hidden" id="form-id">
+                <div id="form-fields" class="space-y-4"></div>
+                <div class="flex justify-end gap-3 pt-2">
+                    <button type="button" onclick="fecharModal()"
+                        class="px-4 py-2 rounded-xl border border-gray-200 text-sm font-medium text-gray-600 hover:bg-gray-50">Cancelar</button>
+                    <button type="submit"
+                        class="px-4 py-2 rounded-xl bg-emerald-600 text-white text-sm font-medium hover:bg-emerald-700 shadow-sm shadow-emerald-100">Salvar
+                        Dados</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- MODAL DE CONFIRMAÇÃO PERSONALIZADO -->
+    <div id="modal-confirm"
+        class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center z-[60] hidden p-4">
+        <div class="bg-white w-full max-w-sm rounded-3xl shadow-xl border border-slate-100 overflow-hidden animate-fade-in">
+            <div class="p-6 flex flex-col items-center text-center">
+                <div id="confirm-icon-wrapper" class="p-3 bg-red-50 rounded-2xl text-red-600 mb-4">
+                    <i data-lucide="alert-triangle" class="w-7 h-7"></i>
+                </div>
+                <h4 id="confirm-title" class="font-bold text-slate-800 text-lg">Confirmar exclusão</h4>
+                <p id="confirm-message" class="text-sm text-slate-500 mt-2 leading-relaxed">Tem certeza que deseja
+                    remover este item?</p>
+            </div>
+            <div class="px-6 pb-6 flex gap-3">
+                <button id="confirm-cancel-btn"
+                    class="flex-1 px-4 py-2.5 rounded-xl border border-gray-200 text-sm font-medium text-gray-600 hover:bg-gray-50 transition-colors">Cancelar</button>
+                <button id="confirm-ok-btn"
+                    class="flex-1 px-4 py-2.5 rounded-xl bg-red-600 text-white text-sm font-medium hover:bg-red-700 shadow-sm shadow-red-100 transition-colors">Excluir</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- JS — Lógica de Integração com a API -->
+    <script>
+        let currentTab = 'dashboard';
+        let currentTarget = '';
+
+        let cachePacientes = [];
+        let cacheCuidadores = [];
+        let cacheVinculos = [];
+        let cacheAtividades = [];
+        let cacheOcorrencias = [];
+
+        function formatarDataBR(dataString, incluirHora = false) {
+            if (!dataString || dataString === 'Ativo') return dataString;
+            try {
+                // Trata formatos ISO (AAAA-MM-DDTHH:MM...) ou apenas data (AAAA-MM-DD)
+                const partesT = dataString.split('T');
+                const dataPartes = partesT[0].split('-');
+                if (dataPartes.length !== 3) return dataString;
+
+                const dataFormatada = `${dataPartes[2]}/${partesT[0].split('-')[1]}/${dataPartes[0]}`;
+
+                if (incluirHora && partesT[1]) {
+                    const horaFormatada = partesT[1].substring(0, 5);
+                    return `${dataFormatada} ${horaFormatada}`;
+                }
+                return dataFormatada;
+            } catch (e) {
+                return dataString;
+            }
+        }
+
+        function formatarTelefoneBR(telString) {
+            if (!telString) return '';
+            // Deixa apenas os números puros
+            const numeros = telString.replace(/\D/g, '');
+
+            // Se tiver o tamanho padrão de celular (11 dígitos) ou fixo (10 dígitos)
+            if (numeros.length >= 10) {
+                return `(${numeros.substring(0, 2)})${numeros.substring(2)}`;
+            }
+
+            return telString; // Retorna o que foi digitado caso não tenha o mínimo de dígitos
+        }
+
+        document.addEventListener("DOMContentLoaded", () => {
+            lucide.createIcons();
+            carregarDadosIniciais();
+        });
+
+        function formatarCPFBR(cpfString) {
+            if (!cpfString) return '';
+            // Deixa apenas os números puros
+            const numeros = cpfString.replace(/\D/g, '');
+
+            // Garante que tem os 11 dígitos necessários para aplicar a máscara completa
+            if (numeros.length === 11) {
+                return `${numeros.substring(0, 3)}.${numeros.substring(3, 6)}.${numeros.substring(6, 9)}-${numeros.substring(9)}`;
+            }
+
+            return cpfString; // Retorna o original caso não tenha os 11 dígitos
+        }
+
+        function switchTab(tab) {
+            document.getElementById(`sec-${currentTab}`).classList.add('hidden');
+            document.getElementById(`nav-${currentTab}`).className = "w-full flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium text-slate-400 hover:bg-slate-800 hover:text-white transition-colors";
+
+            document.getElementById(`sec-${tab}`).classList.remove('hidden');
+            document.getElementById(`nav-${tab}`).className = "w-full flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium bg-emerald-600 text-white transition-colors";
+
+            currentTab = tab;
+
+            const titles = {
+                dashboard: 'Dashboard Geral',
+                pacientes: 'Gerenciamento de Pacientes',
+                cuidadores: 'Gerenciamento de Cuidadores',
+                atividades: 'Controle de Atividades',
+                ocorrencias: 'Histórico de Ocorrências',
+                vinculos: 'Vínculos de Cuidado'
+            };
+            document.getElementById('page-title').innerText = titles[tab] || 'Painel';
+            carregarDadosIniciais();
+        }
+
+        async function carregarDadosIniciais() {
+            try {
+                const resP = await fetch('/api/pacientes'); const dataP = await resP.json();
+                const resC = await fetch('/api/cuidadores'); const dataC = await resC.json();
+                const resA = await fetch('/api/atividades'); const dataA = await resA.json();
+                const resO = await fetch('/api/ocorrencias'); const dataO = await resO.json();
+                const resV = await fetch('/api/vinculos'); const dataV = await resV.json();
+
+                if (dataP.ok) { cachePacientes = dataP.data; filtrarPacientes(); document.getElementById('card-total-pacientes').innerText = dataP.data.length; }
+                if (dataC.ok) { cacheCuidadores = dataC.data; filtrarCuidadores(); document.getElementById('card-total-cuidadores').innerText = dataC.data.length; }
+                if (dataA.ok) { cacheAtividades = dataA.data; filtrarAtividades(); document.getElementById('card-total-atividades').innerText = dataA.data.length; }
+                if (dataO.ok) {
+                    cacheOcorrencias = dataO.data; filtrarOcorrencias(); document.getElementById('card-total-ocorrencias').innerText = dataO.data.filter(o => o.gravidade === 'alta').length;
+                }
+                if (dataV.ok) {
+                    cacheVinculos = dataV.data;
+                    filtrarVinculos();
+                    // Conta apenas os vínculos onde a data_fim é nula, vazia ou igual a 'Ativo'
+                    const vinculosAtivos = dataV.data.filter(v => !v.data_fim || v.data_fim === 'Ativo').length;
+                    document.getElementById('card-total-vinculos').innerText = vinculosAtivos;
+                }
+
+                lucide.createIcons();
+            } catch (err) {
+                console.error("Erro ao sincronizar com a API:", err);
+            }
+        }
+        // --- Renderização de Tabelas ---
+        function atualizarPacientes(lista) {
+            const tbody = document.getElementById('lista-pacientes');
+            tbody.innerHTML = lista.map(p => `
+                <tr class="hover:bg-slate-50/80 transition-colors">
+                    <td class="p-4 font-semibold text-gray-900">${p.nome}</td>
+                    <td class="p-4 text-gray-500">${formatarDataBR(p.data_nascimento)}</td>
+                    <td class="p-4"><span class="px-2.5 py-1 bg-slate-100 rounded-full text-xs font-medium text-slate-700">${p.n_atividades} ativ.</span></td>
+                    <td class="p-4"><span class="px-2.5 py-1 ${p.n_ocorrencias > 0 ? 'bg-red-50 text-red-700' : 'bg-slate-100 text-slate-700'} rounded-full text-xs font-medium">${p.n_ocorrencias} ocor.</span></td>
+                    <td class="p-4 text-right space-x-2">
+                        <button onclick="editarPaciente(${p.id}, '${p.nome}', '${p.data_nascimento}')" class="text-slate-400 hover:text-slate-700"><i data-lucide="edit-2" class="w-4 h-4 inline"></i></button>
+                        <button onclick="deletarEntidade('pacientes', ${p.id})" class="text-red-400 hover:text-red-600"><i data-lucide="trash-2" class="w-4 h-4 inline"></i></button>
+                    </td>
+                </tr>
+            `).join('');
+            lucide.createIcons();
+        }
+
+        function atualizarCuidadores(lista) {
+            const tbody = document.getElementById('lista-cuidadores');
+            tbody.innerHTML = lista.map(c => {
+                const telefonesFormatados = c.telefones && c.telefones.length > 0
+                    ? c.telefones.map(t => formatarTelefoneBR(t)).join(', ')
+                    : 'Nenhum';
+
+                return `
+                    <tr class="hover:bg-slate-50/80 transition-colors">
+                        <td class="p-4">
+                            <div class="font-semibold text-gray-900">${c.nome}</div>
+                            <div class="text-xs text-gray-400">${c.email}</div>
+                        </td>
+                        <td class="p-4 font-mono text-xs text-gray-600">${formatarCPFBR(c.cpf)}</td>
+                        <td class="p-4 text-gray-500 text-xs">${telefonesFormatados}</td>
+                        <td class="p-4 text-xs text-gray-500">${c.n_atividades} ações / ${c.n_ocorrencias} oco.</td>
+                        <td class="p-4 text-right space-x-2">
+                            <button onclick="editarCuidador(${c.id}, '${c.nome}', '${c.email}', '${c.cpf}', '${c.telefones.join(', ')}')" class="text-slate-400 hover:text-slate-700"><i data-lucide="edit-2" class="w-4 h-4 inline"></i></button>
+                            <button onclick="deletarEntidade('cuidadores', ${c.id})" class="text-red-400 hover:text-red-600"><i data-lucide="trash-2" class="w-4 h-4 inline"></i></button>
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+            lucide.createIcons();
+        }
+
+        function atualizarAtividades(lista) {
+            const tbody = document.getElementById('lista-atividades');
+            tbody.innerHTML = lista.map(a => `
+                <tr class="hover:bg-slate-50/80 transition-colors">
+                    <td class="p-4 font-mono text-xs text-gray-600">${formatarDataBR(a.data_hora, true)}</td>
+                    <td class="p-4 font-medium text-gray-900">${a.paciente_nome}</td>
+                    <td class="p-4 text-gray-600">${a.cuidador_nome}</td>
+                    <td class="p-4">
+                        <span class="text-xs font-semibold uppercase bg-purple-50 text-purple-700 px-2 py-0.5 rounded-md">${a.tipo}</span>
+                        <div class="text-xs text-gray-500 mt-1">${a.descricao}</div>
+                    </td>
+                    <td class="p-4 text-right space-x-2">
+                        <button onclick="editarAtividade(${a.id}, ${a.id_paciente}, ${a.id_cuidador}, '${(a.paciente_nome || '').replace(/'/g, "\\'")}', '${(a.cuidador_nome || '').replace(/'/g, "\\'")}', '${a.tipo}', '${a.data_hora}', '${a.descricao}')" class="text-slate-400 hover:text-slate-700"><i data-lucide="edit-2" class="w-4 h-4 inline"></i></button>
+                        <button onclick="deletarEntidade('atividades', ${a.id})" class="text-red-400 hover:text-red-600"><i data-lucide="trash-2" class="w-4 h-4 inline"></i></button>
+                    </td>
+                </tr>
+            `).join('');
+            lucide.createIcons();
+        }
+
+        function atualizarOcorrencias(lista) {
+            const tbody = document.getElementById('lista-ocorrencias');
+            const badg = { baixa: 'bg-yellow-50 text-yellow-800 border-yellow-200', media: 'bg-orange-50 text-orange-800 border-orange-200', alta: 'bg-red-50 text-red-800 border-red-200' };
+            tbody.innerHTML = lista.map(o => `
+                <tr class="hover:bg-slate-50/80 transition-colors">
+                    <td class="p-4 font-mono text-xs text-gray-600">${formatarDataBR(o.data_hora, true)}</td>
+                    <td class="p-4 font-medium text-gray-900">${o.paciente_nome}</td>
+                    <td class="p-4"><span class="px-2 py-0.5 border text-xs font-semibold rounded-md uppercase ${badg[o.gravidade]}">${o.gravidade}</span></td>
+                    <td class="p-4 text-xs text-gray-600">${o.descricao}</td>
+                    <td class="p-4 text-right space-x-2">
+                        <button onclick="editarOcorrencia(${o.id}, ${o.id_paciente}, ${o.id_cuidador}, '${(o.paciente_nome || '').replace(/'/g, "\\'")}', '${(o.cuidador_nome || '').replace(/'/g, "\\'")}', '${o.gravidade}', '${o.data_hora}', '${o.descricao}')" class="text-slate-400 hover:text-slate-700"><i data-lucide="edit-2" class="w-4 h-4 inline"></i></button>
+                        <button onclick="deletarEntidade('ocorrencias', ${o.id})" class="text-red-400 hover:text-red-600"><i data-lucide="trash-2" class="w-4 h-4 inline"></i></button>
+                    </td>
+                </tr>
+            `).join('');
+            lucide.createIcons();
+        }
+
+        function atualizarVinculos(lista) {
+            const tbody = document.getElementById('lista-vinculos');
+            tbody.innerHTML = lista.map(v => `
+                <tr class="hover:bg-slate-50/80 transition-colors">
+                    <td class="p-4 font-semibold text-gray-900">${v.cuidador_nome}</td>
+                    <td class="p-4 text-gray-700">${v.paciente_nome}</td>
+                    <td class="p-4 font-mono text-xs text-gray-500">${formatarDataBR(v.data_inicio)}</td>
+                    <td class="p-4">
+                        <span class="px-2.5 py-1 ${v.data_fim === 'Ativo' || !v.data_fim ? 'bg-emerald-50 text-emerald-700' : 'bg-slate-100 text-slate-600'} rounded-full text-xs font-medium">
+                            ${v.data_fim && v.data_fim !== 'Ativo' ? formatarDataBR(v.data_fim) : 'Ativo'}
+                        </span>
+                    </td>
+                    <td class="p-4 text-right space-x-2">
+                        <button onclick="editarVinculo(${v.id}, ${v.id_cuidador}, ${v.id_paciente}, '${(v.cuidador_nome || '').replace(/'/g, "\\'")}', '${(v.paciente_nome || '').replace(/'/g, "\\'")}', '${v.data_inicio}', '${v.data_fim === 'Ativo' ? '' : v.data_fim}')" class="text-slate-400 hover:text-slate-700">
+                            <i data-lucide="edit-2" class="w-4 h-4 inline"></i>
+                        </button>
+                        <button onclick="deletarEntidade('vinculos', ${v.id})" class="text-red-400 hover:text-red-600">
+                            <i data-lucide="trash-2" class="w-4 h-4 inline"></i>
+                        </button>
+                    </td>
+                </tr>
+            `).join('');
+            lucide.createIcons();
+        }
+
+        // --- Modais de Ação e Formulários Dinâmicos ---
+        function fecharModal() { document.getElementById('modal-global').classList.add('hidden'); }
+
+        // Exibe o card de confirmação personalizado e retorna uma Promise<boolean>
+        function abrirConfirmacao({ title = 'Confirmar exclusão', message = 'Tem certeza que deseja remover este item?', confirmText = 'Excluir', danger = true } = {}) {
+            return new Promise((resolve) => {
+                const modal = document.getElementById('modal-confirm');
+                const iconWrapper = document.getElementById('confirm-icon-wrapper');
+                const okBtn = document.getElementById('confirm-ok-btn');
+                const cancelBtn = document.getElementById('confirm-cancel-btn');
+
+                document.getElementById('confirm-title').innerText = title;
+                document.getElementById('confirm-message').innerText = message;
+                okBtn.innerText = confirmText;
+
+                if (danger) {
+                    iconWrapper.className = 'p-3 bg-red-50 rounded-2xl text-red-600 mb-4';
+                    okBtn.className = 'flex-1 px-4 py-2.5 rounded-xl bg-red-600 text-white text-sm font-medium hover:bg-red-700 shadow-sm shadow-red-100 transition-colors';
+                } else {
+                    iconWrapper.className = 'p-3 bg-amber-50 rounded-2xl text-amber-600 mb-4';
+                    okBtn.className = 'flex-1 px-4 py-2.5 rounded-xl bg-amber-600 text-white text-sm font-medium hover:bg-amber-700 shadow-sm shadow-amber-100 transition-colors';
+                }
+
+                modal.classList.remove('hidden');
+                if (window.lucide) lucide.createIcons();
+
+                function limpar(resultado) {
+                    modal.classList.add('hidden');
+                    okBtn.removeEventListener('click', onOk);
+                    cancelBtn.removeEventListener('click', onCancel);
+                    modal.removeEventListener('click', onBackdrop);
+                    resolve(resultado);
+                }
+                function onOk() { limpar(true); }
+                function onCancel() { limpar(false); }
+                function onBackdrop(e) { if (e.target === modal) limpar(false); }
+
+                okBtn.addEventListener('click', onOk);
+                cancelBtn.addEventListener('click', onCancel);
+                modal.addEventListener('click', onBackdrop);
+            });
+        }
+
+        function abrirModal(title, target, fieldsHtml, id = '') {
+            currentTarget = target;
+            document.getElementById('modal-title').innerText = title;
+            document.getElementById('form-id').value = id;
+            document.getElementById('form-fields').innerHTML = fieldsHtml;
+            document.getElementById('modal-global').classList.remove('hidden');
+            lucide.createIcons();
+        }
+
+        // --- Campo de Busca/Relação (autocomplete de Pacientes ou Cuidadores) ---
+        // Guarda, para cada campo montado, se ele busca em 'pacientes' ou 'cuidadores'
+        const autocompleteConfig = {};
+
+        function normalizarTexto(str) {
+            return (str || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
+        }
+
+        // Encontra o registro correto (paciente ou cuidador) tentando primeiro pelo ID
+        // e, se não achar (ex.: tipos diferentes ou ID ausente), tenta pelo nome como respaldo.
+        function resolverRelacao(cache, idAlvo, nomeAlvo) {
+            let item = cache.find(x => String(x.id) === String(idAlvo));
+            if (!item && nomeAlvo) {
+                item = cache.find(x => normalizarTexto(x.nome) === normalizarTexto(nomeAlvo));
+            }
+            return {
+                id: item ? item.id : (idAlvo ?? ''),
+                nome: item ? item.nome : (nomeAlvo || '')
+            };
+        }
+
+        // Gera o HTML de um campo de busca com sugestões, no mesmo padrão visual dos demais inputs
+        function montarCampoRelacao(idBase, tipo, label, valorId = '', valorNome = '') {
+            autocompleteConfig[idBase] = tipo; // 'pacientes' ou 'cuidadores'
+            return `
+            <div class="relative">
+                <label class="block text-xs font-semibold text-gray-500 mb-1">${label}</label>
+                <div class="relative">
+                    <i data-lucide="search" class="w-4 h-4 text-gray-400 absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none"></i>
+                    <input type="text" id="${idBase}_busca" value="${valorNome}" placeholder="Digite o nome para buscar..." autocomplete="off" required
+                        oninput="filtrarCampoRelacao('${idBase}')" onfocus="filtrarCampoRelacao('${idBase}')" onblur="fecharCampoRelacao('${idBase}')"
+                        class="w-full pl-9 pr-3 py-2 border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-emerald-500">
+                </div>
+                <input type="hidden" id="${idBase}" value="${valorId}">
+                <div id="${idBase}_lista" class="hidden absolute z-20 mt-1 w-full bg-white border border-gray-100 rounded-xl shadow-lg max-h-48 overflow-y-auto"></div>
+            </div>`;
+        }
+
+        function filtrarCampoRelacao(idBase) {
+            const tipo = autocompleteConfig[idBase];
+            const dados = tipo === 'pacientes' ? cachePacientes : cacheCuidadores;
+            const termo = normalizarTexto(document.getElementById(`${idBase}_busca`).value);
+
+            const resultados = dados
+                .filter(item => normalizarTexto(item.nome).includes(termo))
+                .slice(0, 30);
+
+            const lista = document.getElementById(`${idBase}_lista`);
+
+            if (resultados.length === 0) {
+                lista.innerHTML = `<div class="px-4 py-3 text-sm text-gray-400">Nenhum ${tipo === 'pacientes' ? 'paciente' : 'cuidador'} encontrado</div>`;
+            } else {
+                lista.innerHTML = resultados.map(item => `
+                    <button type="button" onmousedown="selecionarCampoRelacao('${idBase}', ${item.id}, '${item.nome.replace(/'/g, "\\'")}')"
+                        class="w-full text-left px-4 py-2.5 text-sm text-gray-700 hover:bg-emerald-50 hover:text-emerald-700 transition-colors">
+                        ${item.nome}
+                    </button>
+                `).join('');
+            }
+            lista.classList.remove('hidden');
+        }
+
+        function selecionarCampoRelacao(idBase, id, nome) {
+            document.getElementById(idBase).value = id;
+            document.getElementById(`${idBase}_busca`).value = nome;
+            document.getElementById(`${idBase}_lista`).classList.add('hidden');
+        }
+
+        function fecharCampoRelacao(idBase) {
+            // Pequeno atraso para permitir que o clique no item seja registrado antes da lista sumir
+            setTimeout(() => {
+                const lista = document.getElementById(`${idBase}_lista`);
+                if (lista) lista.classList.add('hidden');
+            }, 150);
+        }
+
+        function abrirModalPaciente() {
+            abrirModal('Cadastrar Novo Paciente', 'pacientes', `
+                <div><label class="block text-xs font-semibold text-gray-500 mb-1">Nome Completo</label><input type="text" id="p_nome" required class="w-full px-3 py-2 border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-emerald-500"></div>
+                <div><label class="block text-xs font-semibold text-gray-500 mb-1">Data de Nascimento</label><input type="date" id="p_data" required class="w-full px-3 py-2 border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-emerald-500"></div>
+            `);
+        }
+
+        function editarPaciente(id, nome, data) {
+            abrirModal('Editar Paciente', 'pacientes', `
+                <div><label class="block text-xs font-semibold text-gray-500 mb-1">Nome Completo</label><input type="text" id="p_nome" value="${nome}" required class="w-full px-3 py-2 border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-emerald-500"></div>
+                <div><label class="block text-xs font-semibold text-gray-500 mb-1">Data de Nascimento</label><input type="date" id="p_data" value="${data}" required class="w-full px-3 py-2 border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-emerald-500"></div>
+            `, id);
+        }
+
+        function abrirModalCuidador() {
+            abrirModal('Cadastrar Novo Cuidador', 'cuidadores', `
+                <div><label class="block text-xs font-semibold text-gray-500 mb-1">Nome Completo</label><input type="text" id="c_nome" required class="w-full px-3 py-2 border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-emerald-500"></div>
+                <div><label class="block text-xs font-semibold text-gray-500 mb-1">E-mail corporativo</label><input type="email" id="c_email" required class="w-full px-3 py-2 border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-emerald-500"></div>
+                <div><label class="block text-xs font-semibold text-gray-500 mb-1">CPF (apenas números)</label><input type="text" id="c_cpf" maxlength="11" required class="w-full px-3 py-2 border border-gray-200 rounded-xl text-sm font-mono focus:outline-none focus:border-emerald-500"></div>
+                <div><label class="block text-xs font-semibold text-gray-500 mb-1">Telefones (Separados por vírgula)</label><input type="text" id="c_tels" class="w-full px-3 py-2 border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-emerald-500" placeholder="(88) 9999-9999"></div>
+            `);
+        }
+
+        function editarCuidador(id, nome, email, cpf, tels) {
+            abrirModal('Editar Cuidador', 'cuidadores', `
+                <div><label class="block text-xs font-semibold text-gray-500 mb-1">Nome Completo</label><input type="text" id="c_nome" value="${nome}" required class="w-full px-3 py-2 border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-emerald-500"></div>
+                <div><label class="block text-xs font-semibold text-gray-500 mb-1">E-mail corporativo</label><input type="email" id="c_email" value="${email}" required class="w-full px-3 py-2 border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-emerald-500"></div>
+                <div><label class="block text-xs font-semibold text-gray-500 mb-1">CPF</label><input type="text" id="c_cpf" value="${cpf}" maxlength="11" required class="w-full px-3 py-2 border border-gray-200 rounded-xl text-sm font-mono focus:outline-none focus:border-emerald-500"></div>
+                <div><label class="block text-xs font-semibold text-gray-500 mb-1">Telefones</label><input type="text" id="c_tels" value="${tels}" class="w-full px-3 py-2 border border-gray-200 rounded-xl text-sm focus:outline-none focus:border-emerald-500"></div>
+            `, id);
+        }
+
+        function abrirModalAtividade() {
+            abrirModal('Agendar Nova Atividade', 'atividades', `
+                ${montarCampoRelacao('a_pac', 'pacientes', 'Paciente')}
+                ${montarCampoRelacao('a_cuid', 'cuidadores', 'Cuidador')}
+                <div class="grid grid-cols-2 gap-3">
+                    <div><label class="block text-xs font-semibold text-gray-500 mb-1">Tipo</label><input type="text" id="a_tipo" placeholder="Medicação, Banho..." required class="w-full px-3 py-2 border border-gray-200 rounded-xl text-sm"></div>
+                    <div><label class="block text-xs font-semibold text-gray-500 mb-1">Data / Hora</label><input type="datetime-local" id="a_data" required class="w-full px-3 py-2 border border-gray-200 rounded-xl text-sm"></div>
+                </div>
+                <div><label class="block text-xs font-semibold text-gray-500 mb-1">Descrição</label><textarea id="a_desc" required class="w-full px-3 py-2 border border-gray-200 rounded-xl text-sm h-20 resize-none"></textarea></div>
+            `);
+        }
+
+        function abrirModalOcorrencia() {
+            abrirModal('Registrar Ocorrência Emergencial', 'ocorrencias', `
+                ${montarCampoRelacao('o_pac', 'pacientes', 'Paciente')}
+                ${montarCampoRelacao('o_cuid', 'cuidadores', 'Cuidador Relator')}
+                <div class="grid grid-cols-2 gap-3">
+                    <div><label class="block text-xs font-semibold text-gray-500 mb-1">Gravidade</label><select id="o_grav" class="w-full px-3 py-2 border border-gray-200 rounded-xl text-sm bg-white"><option value="baixa">Baixa</option><option value="media">Média</option><option value="alta">Alta</option></select></div>
+                    <div><label class="block text-xs font-semibold text-gray-500 mb-1">Data / Hora</label><input type="datetime-local" id="o_data" required class="w-full px-3 py-2 border border-gray-200 rounded-xl text-sm"></div>
+                </div>
+                <div><label class="block text-xs font-semibold text-gray-500 mb-1">Descrição do Evento</label><textarea id="o_desc" required class="w-full px-3 py-2 border border-gray-200 rounded-xl text-sm h-20 resize-none"></textarea></div>
+            `);
+        }
+
+        function abrirModalVinculo() {
+            abrirModal('Vincular Assistência', 'vinculos', `
+                ${montarCampoRelacao('v_cuid', 'cuidadores', 'Cuidador Responsável')}
+                ${montarCampoRelacao('v_pac', 'pacientes', 'Paciente')}
+                <div class="grid grid-cols-2 gap-3">
+                    <div><label class="block text-xs font-semibold text-gray-500 mb-1">Data de Início</label><input type="date" id="v_inicio" required class="w-full px-3 py-2 border border-gray-200 rounded-xl text-sm"></div>
+                    <div><label class="block text-xs font-semibold text-gray-500 mb-1">Data de Término (Opcional)</label><input type="date" id="v_fim" class="w-full px-3 py-2 border border-gray-200 rounded-xl text-sm"></div>
+                </div>
+            `);
+        }
+
+        function editarAtividade(id, idPac, idCuid, nomePacParam, nomeCuidParam, tipo, dataHora, descricao) {
+            const pac = resolverRelacao(cachePacientes, idPac, nomePacParam);
+            const cuid = resolverRelacao(cacheCuidadores, idCuid, nomeCuidParam);
+            const dataFormatada = dataHora.substring(0, 16);
+
+            abrirModal('Editar Atividade', 'atividades', `
+                ${montarCampoRelacao('a_pac', 'pacientes', 'Paciente', pac.id, pac.nome)}
+                ${montarCampoRelacao('a_cuid', 'cuidadores', 'Cuidador', cuid.id, cuid.nome)}
+                <div class="grid grid-cols-2 gap-3">
+                    <div><label class="block text-xs font-semibold text-gray-500 mb-1">Tipo</label><input type="text" id="a_tipo" value="${tipo}" required class="w-full px-3 py-2 border border-gray-200 rounded-xl text-sm"></div>
+                    <div><label class="block text-xs font-semibold text-gray-500 mb-1">Data / Hora</label><input type="datetime-local" id="a_data" value="${dataFormatada}" required class="w-full px-3 py-2 border border-gray-200 rounded-xl text-sm"></div>
+                </div>
+                <div><label class="block text-xs font-semibold text-gray-500 mb-1">Descrição</label><textarea id="a_desc" required class="w-full px-3 py-2 border border-gray-200 rounded-xl text-sm h-20 resize-none">${descricao}</textarea></div>
+            `, id);
+        }
+
+        function editarOcorrencia(id, idPac, idCuid, nomePacParam, nomeCuidParam, gravidade, dataHora, descricao) {
+            const pac = resolverRelacao(cachePacientes, idPac, nomePacParam);
+            const cuid = resolverRelacao(cacheCuidadores, idCuid, nomeCuidParam);
+            const dataFormatada = dataHora.substring(0, 16);
+
+            abrirModal('Editar Ocorrência', 'ocorrencias', `
+                ${montarCampoRelacao('o_pac', 'pacientes', 'Paciente', pac.id, pac.nome)}
+                ${montarCampoRelacao('o_cuid', 'cuidadores', 'Cuidador Relator', cuid.id, cuid.nome)}
+                <div class="grid grid-cols-2 gap-3">
+                    <div><label class="block text-xs font-semibold text-gray-500 mb-1">Gravidade</label><select id="o_grav" class="w-full px-3 py-2 border border-gray-200 rounded-xl text-sm bg-white">
+                        <option value="baixa" ${gravidade === 'baixa' ? 'selected' : ''}>Baixa</option>
+                        <option value="media" ${gravidade === 'media' ? 'selected' : ''}>Média</option>
+                        <option value="alta" ${gravidade === 'alta' ? 'selected' : ''}>Alta</option>
+                    </select></div>
+                    <div><label class="block text-xs font-semibold text-gray-500 mb-1">Data / Hora</label><input type="datetime-local" id="o_data" value="${dataFormatada}" required class="w-full px-3 py-2 border border-gray-200 rounded-xl text-sm"></div>
+                </div>
+                <div><label class="block text-xs font-semibold text-gray-500 mb-1">Descrição do Evento</label><textarea id="o_desc" required class="w-full px-3 py-2 border border-gray-200 rounded-xl text-sm h-20 resize-none">${descricao}</textarea></div>
+            `, id);
+        }
+
+        function editarVinculo(id, idCuid, idPac, nomeCuidParam, nomePacParam, dataInicio, dataFim) {
+            const pac = resolverRelacao(cachePacientes, idPac, nomePacParam);
+            const cuid = resolverRelacao(cacheCuidadores, idCuid, nomeCuidParam);
+
+            abrirModal('Editar Vínculo de Assistência', 'vinculos', `
+        ${montarCampoRelacao('v_cuid', 'cuidadores', 'Cuidador Responsável', cuid.id, cuid.nome)}
+        ${montarCampoRelacao('v_pac', 'pacientes', 'Paciente', pac.id, pac.nome)}
+        <div class="grid grid-cols-2 gap-3">
+            <div>
+                <label class="block text-xs font-semibold text-gray-500 mb-1">Data de Início</label>
+                <input type="date" id="v_inicio" value="${dataInicio}" required class="w-full px-3 py-2 border border-gray-200 rounded-xl text-sm">
+            </div>
+            <div>
+                <label class="block text-xs font-semibold text-gray-500 mb-1">Data de Término</label>
+                <input type="date" id="v_fim" value="${dataFim || ''}" class="w-full px-3 py-2 border border-gray-200 rounded-xl text-sm">
+            </div>
+        </div>
+    `, id);
+        }
+
+        // --- Envio de dados à API ---
+        async function enviarFormulario(e) {
+            e.preventDefault();
+            const id = document.getElementById('form-id').value;
+            let payload = {};
+            let url = `/api/${currentTarget}`;
+            let method = id ? 'PUT' : 'POST';
+
+            if (id) url += `/${id}`;
+
+            if (currentTarget === 'pacientes') {
+                payload = { nome: document.getElementById('p_nome').value, data_nascimento: document.getElementById('p_data').value };
+            } else if (currentTarget === 'cuidadores') {
+                // Pega o valor do input, divide por vírgula e remove qualquer caractere que não seja número de cada telefone
+                const telsLimpos = document.getElementById('c_tels').value
+                    .split(',')
+                    .map(t => t.replace(/\D/g, ''))
+                    .filter(t => t.length > 0);
+
+                payload = {
+                    nome: document.getElementById('c_nome').value,
+                    email: document.getElementById('c_email').value,
+                    cpf: document.getElementById('c_cpf').value.replace(/\D/g, ''), // Garante CPF limpo também
+                    telefones: telsLimpos
+                };
+            } else if (currentTarget === 'atividades') {
+                const idPac = document.getElementById('a_pac').value;
+                const idCuid = document.getElementById('a_cuid').value;
+                if (!idPac || !idCuid) { alert('Selecione um paciente e um cuidador válidos na lista de busca.'); return; }
+                payload = {
+                    id_paciente: parseInt(idPac),
+                    id_cuidador: parseInt(idCuid),
+                    tipo: document.getElementById('a_tipo').value,
+                    data_hora: document.getElementById('a_data').value,
+                    descricao: document.getElementById('a_desc').value
+                };
+            } else if (currentTarget === 'ocorrencias') {
+                const idPac = document.getElementById('o_pac').value;
+                const idCuid = document.getElementById('o_cuid').value;
+                if (!idPac || !idCuid) { alert('Selecione um paciente e um cuidador válidos na lista de busca.'); return; }
+                payload = {
+                    id_paciente: parseInt(idPac),
+                    id_cuidador: parseInt(idCuid),
+                    gravidade: document.getElementById('o_grav').value,
+                    data_hora: document.getElementById('o_data').value,
+                    descricao: document.getElementById('o_desc').value
+                };
+            } else if (currentTarget === 'vinculos') {
+                const idPac = document.getElementById('v_pac').value;
+                const idCuid = document.getElementById('v_cuid').value;
+                if (!idPac || !idCuid) { alert('Selecione um paciente e um cuidador válidos na lista de busca.'); return; }
+                payload = {
+                    id_cuidador: parseInt(idCuid),
+                    id_paciente: parseInt(idPac),
+                    data_inicio: document.getElementById('v_inicio').value,
+                    data_fim: document.getElementById('v_fim').value || null
+                };
+            }
+
+            const response = await fetch(url, { method, headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
+            const resData = await response.json();
+
+            if (resData.ok) {
+                fecharModal();
+                carregarDadosIniciais();
+            } else {
+                alert("Erro na operação: " + resData.error);
+            }
+        }
+
+        async function deletarEntidade(target, id, force = false) {
+            let url = `/api/${target}/${id}`;
+            if (force) url += '?force=1';
+
+            if (!force) {
+                const confirmado = await abrirConfirmacao({
+                    title: 'Remover item',
+                    message: 'Tem certeza que deseja remover este item? Essa ação não poderá ser desfeita.',
+                    confirmText: 'Excluir'
+                });
+                if (!confirmado) return;
+            }
+
+            const response = await fetch(url, { method: 'DELETE' });
+
+            if (response.status === 409) {
+                const confData = await response.json();
+                const confirmadoCascata = await abrirConfirmacao({
+                    title: 'Exclusão em cascata',
+                    message: `Existem ${confData.n_atividades} atividades e ${confData.n_ocorrencias} ocorrências vinculadas a este item. Deseja forçar a exclusão em cascata?`,
+                    confirmText: 'Forçar exclusão'
+                });
+                if (confirmadoCascata) deletarEntidade(target, id, true);
+                return;
+            }
+
+            const resData = await response.json();
+            if (resData.ok) carregarDadosIniciais();
+            else alert("Erro ao deletar: " + resData.error);
+        }
+
+        function filtrarPacientes() {
+            const termo = document.getElementById('pesquisa-paciente').value
+                .normalize('NFD')
+                .replace(/[\u0300-\u036f]/g, "")
+                .toLowerCase();
+
+            const pacientesFiltrados = cachePacientes.filter(p => {
+                const nomeSemAcento = p.nome
+                    .normalize('NFD')
+                    .replace(/[\u0300-\u036f]/g, "")
+                    .toLowerCase();
+
+                return nomeSemAcento.includes(termo);
+            });
+
+            atualizarPacientes(pacientesFiltrados);
+        }
+
+        function filtrarCuidadores() {
+            const termoOriginal = document.getElementById('pesquisa-cuidador').value;
+            const termo = termoOriginal.normalize('NFD').replace(/[\u0300-\u036f]/g, "").toLowerCase();
+            const termoNumeros = termoOriginal.replace(/\D/g, "");
+
+            const cuidadoresFiltrados = cacheCuidadores.filter(c => {
+                const nomeSemAcento = c.nome.normalize('NFD').replace(/[\u0300-\u036f]/g, "").toLowerCase();
+                const cpfNumeros = c.cpf.replace(/\D/g, "");
+
+                const bateNome = nomeSemAcento.includes(termo);
+                const bateCpf = cpfNumeros.includes(termoNumeros) && termoNumeros.length > 0;
+
+                return bateNome || bateCpf;
+            });
+
+            atualizarCuidadores(cuidadoresFiltrados);
+        }
+
+        function filtrarVinculos() {
+            const termo = document.getElementById('pesquisa-vinculo-nome').value.normalize('NFD').replace(/[\u0300-\u036f]/g, "").toLowerCase();
+            const status = document.getElementById('pesquisa-vinculo-status').value;
+            const dataDe = document.getElementById('pesquisa-vinculo-de').value;
+            const dataAte = document.getElementById('pesquisa-vinculo-ate').value;
+
+            const vinculosFiltrados = cacheVinculos.filter(v => {
+                const nomeCuidador = (v.cuidador_nome || '').normalize('NFD').replace(/[\u0300-\u036f]/g, "").toLowerCase();
+                const nomePaciente = (v.paciente_nome || '').normalize('NFD').replace(/[\u0300-\u036f]/g, "").toLowerCase();
+                const bateNome = nomeCuidador.includes(termo) || nomePaciente.includes(termo);
+
+                let bateStatus = true;
+                if (status === 'ativos') {
+                    bateStatus = !v.data_fim || v.data_fim === 'Ativo';
+                } else if (status === 'finalizados') {
+                    bateStatus = v.data_fim && v.data_fim !== 'Ativo';
+                }
+
+                let bateData = true;
+                if (v.data_inicio) {
+                    const dataInicioFormatada = v.data_inicio.substring(0, 10);
+                    if (dataDe && dataInicioFormatada < dataDe) bateData = false;
+                    if (dataAte && dataInicioFormatada > dataAte) bateData = false;
+                }
+
+                return bateNome && bateStatus && bateData;
+            });
+
+            atualizarVinculos(vinculosFiltrados);
+        }
+
+        function filtrarAtividades() {
+            // Captura os valores digitados e selecionados nos inputs de pesquisa
+            const termoNome = document.getElementById('pesquisa-atividade-nome').value
+                .normalize('NFD')
+                .replace(/[\u0300-\u036f]/g, "")
+                .toLowerCase();
+
+            const termoTipo = document.getElementById('pesquisa-atividade-tipo').value
+                .normalize('NFD')
+                .replace(/[\u0300-\u036f]/g, "")
+                .toLowerCase();
+
+            const dataDe = document.getElementById('pesquisa-atividade-de').value;
+            const dataAte = document.getElementById('pesquisa-atividade-ate').value;
+
+            // Filtra o cache de atividades em tempo real
+            const atividadesFiltradas = cacheAtividades.filter(a => {
+                // 1. Filtro por Nome (Paciente ou Cuidador)
+                const nomePaciente = (a.paciente_nome || '').normalize('NFD').replace(/[\u0300-\u036f]/g, "").toLowerCase();
+                const nomeCuidador = (a.cuidador_nome || '').normalize('NFD').replace(/[\u0300-\u036f]/g, "").toLowerCase();
+                const bateNome = nomePaciente.includes(termoNome) || nomeCuidador.includes(termoNome);
+
+                // 2. Filtro por Tipo de Atividade
+                const tipoAtiv = (a.tipo || '').normalize('NFD').replace(/[\u0300-\u036f]/g, "").toLowerCase();
+                const bateTipo = tipoAtiv.includes(termoTipo);
+
+                // 3. Filtro Cronológico (Período por data_hora)
+                let bateData = true;
+                if (a.data_hora) {
+                    // Extrai apenas os primeiros 10 caracteres (AAAA-MM-DD) para comparar com os inputs de tipo date
+                    const dataAtividadeFormatada = a.data_hora.substring(0, 10);
+
+                    if (dataDe && dataAtividadeFormatada < dataDe) bateData = false;
+                    if (dataAte && dataAtividadeFormatada > dataAte) bateData = false;
+                }
+
+                // A atividade precisa passar em todas as validações simultaneamente
+                return bateNome && bateTipo && bateData;
+            });
+
+            // Atualiza e redesenha a tabela com a lista refinada
+            atualizarAtividades(atividadesFiltradas);
+        }
+
+        function filtrarOcorrencias() {
+            const termo = document.getElementById('pesquisa-ocorrencia-paciente').value.normalize('NFD').replace(/[\u0300-\u036f]/g, "").toLowerCase();
+            const gravidade = document.getElementById('pesquisa-ocorrencia-gravidade').value;
+            const dataDe = document.getElementById('pesquisa-ocorrencia-de').value;
+            const dataAte = document.getElementById('pesquisa-ocorrencia-ate').value;
+
+            const ocorrenciasFiltradas = cacheOcorrencias.filter(o => {
+                const nomePaciente = (o.paciente_nome || '').normalize('NFD').replace(/[\u0300-\u036f]/g, "").toLowerCase();
+                const bateNome = nomePaciente.includes(termo);
+
+                let bateGravidade = true;
+                if (gravidade !== 'todas') {
+                    bateGravidade = (o.gravidade === gravidade);
+                }
+
+                let bateData = true;
+                if (o.data_hora) {
+                    const dataOcorrenciaFormatada = o.data_hora.substring(0, 10);
+                    if (dataDe && dataOcorrenciaFormatada < dataDe) bateData = false;
+                    if (dataAte && dataOcorrenciaFormatada > dataAte) bateData = false;
+                }
+
+                return bateNome && bateGravidade && bateData;
+            });
+
+            atualizarOcorrencias(ocorrenciasFiltradas);
+        }
+
+
+    </script>
+</body>
+
+</html>
